@@ -1,10 +1,11 @@
 import configparser
-from github import Github
-import wget
+import sys
 
-import os
-import shutil
-from pathlib import Path
+from repo_downloader import RepoDownloader
+
+VERSION = "0.0.0"
+
+
 
 
 
@@ -20,82 +21,20 @@ def read_config():
 
 
 
-def download(url, path):
-    print('Downloading...')
-    try:
-        downloaded = wget.download(url, path)
-        print()
-        return downloaded
-    except Exception:
-        print("ERROR on downloading")
-        exit()
 
 
-def extract_archive(archive_filepath, output_dir):
-    print('Extracting...')
-    try:
-        shutil.unpack_archive(archive_filepath, output_dir)
-    except Exception:
-        print("ERROR on extracting archive")
-        exit()
-
-def create_archive(new_archive_file, dir):
-    print('Creating zip archive...')
-    try:
-        shutil.make_archive(new_archive_file, 'zip', dir)
-    except Exception:
-        print("ERROR on creating archive")
-        exit()
-
-
-
-print("--- gh2wp beta version ---")
-
-
-
-
-
-repo_name = 'e-activities-core'
-
+print("RWP Deployer v" + VERSION)
 
 settings = read_config()
+repos_to_deploy = sys.argv[1:]
+downloader = RepoDownloader(settings['GithubToken'], settings['TmpDir'])
 
 
+print('Repositories to deploy: ' + ', '.join(repos_to_deploy))
 
-
-g = Github(settings['GithubToken'])
-
-
-
-repo = g.get_user().get_repo(repo_name)
-
-
-
-print('Repository name: ' + repo_name)
-
-archive_url = repo.get_archive_link('zipball')
-
-
-
-tmp_dir = settings['TmpDir']
-
-
-downloaded_filepath = download(archive_url, tmp_dir)
-
-
-downloaded_file_base_name = Path(downloaded_filepath).stem
-
-
-extracted_dir = tmp_dir + '/.tmp' #TODO
-extract_archive(downloaded_filepath, extracted_dir)
-
-
-os.rename(extracted_dir + "/" + downloaded_file_base_name, extracted_dir + "/" + repo_name)
-create_archive(tmp_dir + "/" + repo_name, extracted_dir)
-
-print('Removing temporary files...')
-os.remove(downloaded_filepath)
-shutil.rmtree(extracted_dir)
-
-
-
+for repo_name in repos_to_deploy:
+    print()
+    downloaded_filepath = downloader.download(repo_name)
+    print('Download finished successfully.')
+    # print(downloaded_filepath)
+    
