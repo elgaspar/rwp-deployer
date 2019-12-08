@@ -4,6 +4,7 @@ import os
 import shutil
 
 import transform
+from utilities import error
 
 
 class RepoDownloader:
@@ -12,15 +13,14 @@ class RepoDownloader:
         try:
             self.github = Github(github_token)
         except:
-            print("ERROR on authenticating with GitHub")
-            exit()
+            error("Couldn't authenticate with GitHub.")
         self.output_dir = output_dir
-        # TODO: check if output dir exists -> if not create it
+        self.tmp_dir = self.output_dir + '/.tmp'
 
     def download(self, repo_name):
         print('Downloading ' + repo_name + "...")
         zipfile = self.__download_file(repo_name)
-        transform.tranform_zip_file(zipfile, self.__get_tmp_dir())
+        transform.tranform_zip_file(zipfile, self.tmp_dir)
         return zipfile
 
     def __download_file(self, repo_name):
@@ -29,20 +29,15 @@ class RepoDownloader:
             filename = self.output_dir + '/' + repo_name + '.zip'
             urllib.request.urlretrieve(url, filename)
         except Exception:
-            print("ERROR on downloading")
-            exit()
+            error("Couldn't download file.")
         return filename
 
     def __get_repo_url(self, repo_name):
         try:
             repo = self.github.get_user().get_repo(repo_name)
         except:
-            print("Invalid repository name.")
-            exit()
+            error("Invalid repository name.")
 
         repo_url = repo.get_archive_link('zipball', 'master')
         repo_url = repo_url.replace('/legacy.zip/', '/zip/')
         return repo_url
-
-    def __get_tmp_dir(self):
-        return self.output_dir + '/.tmp'

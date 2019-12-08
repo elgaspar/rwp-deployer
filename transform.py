@@ -2,6 +2,8 @@ from pathlib import Path
 import os
 import shutil
 
+from utilities import error
+
 
 def tranform_zip_file(zipfile, tmp_dir):
     __extract_archive(zipfile, tmp_dir)
@@ -17,8 +19,7 @@ def __extract_archive(zipfile, output_dir):
     try:
         shutil.unpack_archive(zipfile, output_dir)
     except Exception:
-        print("ERROR on extracting archive")
-        exit()
+        error("Couldn't extract archive.")
 
 
 def __rename_dir(repo_name, tmp_dir):
@@ -33,8 +34,7 @@ def __create_archive(new_archive_file, dir_with_content):
         filepath = __trim_extension(new_archive_file)
         shutil.make_archive(filepath, 'zip', dir_with_content)
     except Exception:
-        print("ERROR on creating archive")
-        exit()
+        eror("Couldn't create archive.")
 
 
 def __trim_extension(filepath):
