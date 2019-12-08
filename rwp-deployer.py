@@ -1,12 +1,9 @@
 import configparser
 import sys
 
-from repo_downloader import RepoDownloader
+import download
 
 VERSION = "0.0.0"
-
-
-
 
 
 def read_config():
@@ -20,14 +17,26 @@ def read_config():
     return config['settings']
 
 
+def read_repos():
+    repos = sys.argv[1:]
 
+    if not repos:
+        print_usage_information()
+        exit()
+    return repos
+
+
+def print_usage_information():
+    print("\nUsage:")
+    print("   py rwp-deployer.py [repo_names]")
 
 
 print("RWP Deployer v" + VERSION)
 
 settings = read_config()
-repos_to_deploy = sys.argv[1:]
-downloader = RepoDownloader(settings['GithubToken'], settings['TmpDir'])
+repos_to_deploy = read_repos()
+downloader = download.RepoDownloader(
+    settings['GithubToken'], settings['TmpDir'])
 
 
 print('Repositories to deploy: ' + ', '.join(repos_to_deploy))
@@ -37,4 +46,3 @@ for repo_name in repos_to_deploy:
     downloaded_filepath = downloader.download(repo_name)
     print('Download finished successfully.')
     # print(downloaded_filepath)
-    
