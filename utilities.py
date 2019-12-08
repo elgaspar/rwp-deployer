@@ -8,8 +8,7 @@ def read_config():
     for option in config['settings']:
         value = config['settings'][option]
         if(not value):
-            print('Config file is not set.')
-            exit()
+            error('Config file is not set.')
     return config['settings']
 
 

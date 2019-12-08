@@ -1,4 +1,3 @@
-from github import Github
 import urllib.request
 import os
 import shutil
@@ -9,35 +8,26 @@ from utilities import error
 
 class RepoDownloader:
 
-    def __init__(self, github_token, output_dir):
-        try:
-            self.github = Github(github_token)
-        except:
-            error("Couldn't authenticate with GitHub.")
+    def __init__(self, output_dir):
         self.output_dir = output_dir
         self.tmp_dir = self.output_dir + '/.tmp'
 
-    def download(self, repo_name):
-        print('Downloading ' + repo_name + "...")
-        zipfile = self.__download_file(repo_name)
-        transform.tranform_zip_file(zipfile, self.tmp_dir)
-        return zipfile
+    def download(self, urls):
+        print()
+        for repo_name, url in urls:
+            self.__download_repo(repo_name, url)
+        print('All repositories were downloaded successfully.')
 
-    def __download_file(self, repo_name):
-        url = self.__get_repo_url(repo_name)
+    def __download_repo(self, repo_name, url):
+        print('Downloading ' + repo_name + "...")
+        save_as = self.output_dir + '/' + repo_name + '.zip'
+        zipfile = self.__download_file(url, save_as)
+        transform.tranform_zip_file(zipfile, self.tmp_dir)
+        print()
+
+    def __download_file(self, url, save_as):
         try:
-            filename = self.output_dir + '/' + repo_name + '.zip'
-            urllib.request.urlretrieve(url, filename)
+            urllib.request.urlretrieve(url, save_as)
         except Exception:
             error("Couldn't download file.")
-        return filename
-
-    def __get_repo_url(self, repo_name):
-        try:
-            repo = self.github.get_user().get_repo(repo_name)
-        except:
-            error("Invalid repository name.")
-
-        repo_url = repo.get_archive_link('zipball', 'master')
-        repo_url = repo_url.replace('/legacy.zip/', '/zip/')
-        return repo_url
+        return save_as
