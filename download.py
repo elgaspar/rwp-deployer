@@ -8,9 +8,10 @@ from utilities import error
 
 class RepoDownloader:
 
-    def __init__(self, output_dir):
+    def __init__(self, output_dir, excluded_filenames=[]):
         self.output_dir = output_dir
         self.tmp_dir = self.output_dir + '/.tmp'
+        self.excluded_filenames = excluded_filenames
 
     def download(self, urls):
         print()
@@ -22,7 +23,8 @@ class RepoDownloader:
         print('Downloading ' + repo_name + "...")
         save_as = self.output_dir + '/' + repo_name + '.zip'
         zipfile = self.__download_file(url, save_as)
-        transform.tranform_zip_file(zipfile, self.tmp_dir)
+        transform.tranform_zip_file(
+            zipfile, self.tmp_dir, self.excluded_filenames)
         print()
 
     def __download_file(self, url, save_as):

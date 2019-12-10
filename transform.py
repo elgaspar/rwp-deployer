@@ -5,11 +5,12 @@ import shutil
 from utilities import error
 
 
-def tranform_zip_file(zipfile, tmp_dir):
+def tranform_zip_file(zipfile, tmp_dir, excluded_filenames=[]):
     __extract_archive(zipfile, tmp_dir)
     __remove_file(zipfile)
     repo_name = Path(zipfile).stem
     __rename_dir(repo_name, tmp_dir)
+    __remove_excluded_files(tmp_dir + '/' + repo_name, excluded_filenames)
     __create_archive(zipfile, tmp_dir)
     __remove_dir(tmp_dir)
 
@@ -26,6 +27,14 @@ def __rename_dir(repo_name, tmp_dir):
     new_name = tmp_dir + "/" + repo_name
     old_name = new_name + "-master"
     os.rename(old_name, new_name)
+
+
+def __remove_excluded_files(dir_path, excluded_filenames):
+    for subdir, dirs, files in os.walk(dir_path):
+        for file in files:
+            if(file in excluded_filenames):
+                filepath = os.path.join(subdir, file)
+                __remove_file(filepath)
 
 
 def __create_archive(new_archive_file, dir_with_content):
