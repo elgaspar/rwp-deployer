@@ -13,12 +13,12 @@ class RepoUrlGetter:
 
     def get_urls(self, repo_names):
         print("Retrieving URLs...")
-        urls = []
+        urls = {}
         contains_invalid_name = False
         for repo_name in repo_names:
             url = self.__get_repo_url(repo_name)
             if(url):
-                urls.append((repo_name, url))
+                urls[repo_name] = url
             else:
                 print("Invalid repository name: " + repo_name)
                 contains_invalid_name = True

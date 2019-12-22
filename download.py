@@ -14,18 +14,22 @@ class RepoDownloader:
         self.excluded_filenames = excluded_filenames
 
     def download(self, urls):
-        print()
-        for repo_name, url in urls:
-            self.__download_repo(repo_name, url)
-        print('All repositories were downloaded successfully.')
+        # print()
+        print('Downloading...')
+        downloaded = {}
+        for repo_name, url in urls.items():
+            # print('Downloading ' + repo_name + "...")
+            downloaded[repo_name] = self.__download_repo(repo_name, url)
+        # print('All repositories were downloaded successfully.')
+        return downloaded
 
     def __download_repo(self, repo_name, url):
-        print('Downloading ' + repo_name + "...")
-        save_as = self.output_dir + '/' + repo_name + '.zip'
+        save_as = self.output_dir + '\\' + repo_name + '.zip'
         zipfile = self.__download_file(url, save_as)
         transform.tranform_zip_file(
             zipfile, self.tmp_dir, self.excluded_filenames)
-        print()
+        # print()
+        return zipfile
 
     def __download_file(self, url, save_as):
         try:

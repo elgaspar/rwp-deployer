@@ -5,15 +5,15 @@ import sys
 CONFIG_FILENAME = 'rwp-deployer.config'
 
 
-def read_config():
+def read_config(name):
     try:
         config = configparser.ConfigParser()
         config.read(CONFIG_FILENAME)
-        for option in config['settings']:
-            value = config['settings'][option]
+        for option in config[name]:
+            value = config[name][option]
             if(not value):
                 error('Config file is not set.')
-        return config['settings']
+        return config[name]
     except Exception:
         error('Config file is not set.')
 

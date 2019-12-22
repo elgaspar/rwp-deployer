@@ -16,7 +16,7 @@ def tranform_zip_file(zipfile, tmp_dir, excluded_filenames=[]):
 
 
 def __extract_archive(zipfile, output_dir):
-    print('Extracting...')
+    # print('Extracting...')
     try:
         shutil.unpack_archive(zipfile, output_dir)
     except Exception:
@@ -38,7 +38,7 @@ def __remove_excluded_files(dir_path, excluded_filenames):
 
 
 def __create_archive(new_archive_file, dir_with_content):
-    print('Creating zip archive...')
+    # print('Creating zip archive...')
     try:
         filepath = __trim_extension(new_archive_file)
         shutil.make_archive(filepath, 'zip', dir_with_content)
@@ -55,5 +55,5 @@ def __remove_file(filepath):
 
 
 def __remove_dir(dirpath):
-    print('Removing temporary files...')
+    # print('Removing temporary files...')
     shutil.rmtree(dirpath)
