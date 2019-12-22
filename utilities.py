@@ -6,13 +6,16 @@ CONFIG_FILENAME = 'rwp-deployer.config'
 
 
 def read_config():
-    config = configparser.ConfigParser()
-    config.read(CONFIG_FILENAME)
-    for option in config['settings']:
-        value = config['settings'][option]
-        if(not value):
-            error('Config file is not set.')
-    return config['settings']
+    try:
+        config = configparser.ConfigParser()
+        config.read(CONFIG_FILENAME)
+        for option in config['settings']:
+            value = config['settings'][option]
+            if(not value):
+                error('Config file is not set.')
+        return config['settings']
+    except Exception:
+        error('Config file is not set.')
 
 
 def read_args():
