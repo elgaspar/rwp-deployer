@@ -1,3 +1,4 @@
 .vscode
 venv
-rwp-deployer.config
+__pycache__
+*.config
