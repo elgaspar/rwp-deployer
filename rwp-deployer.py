@@ -1,3 +1,4 @@
+import argparse
 from repo_url_getter import RepoUrlGetter
 from download import RepoDownloader
 from deploy import PluginDeployer
@@ -7,23 +8,29 @@ import json
 
 VERSION = "0.0.0"  # FIXME
 
+args = utilities.read_args()
 
+print()
 print("RWP Deployer v" + VERSION)
 
 settings = utilities.read_config('settings')
 remote_connect_details = utilities.read_config('remote')
 
-repos_to_deploy = utilities.read_args()
 
 print()
-print('Repositories to deploy: ' + ', '.join(repos_to_deploy))
+print('Repositories:\n\t' + '\n\t'.join(args.repositories))
+print()
 
 url_getter = RepoUrlGetter(settings['GithubToken'])
-repo_urls = url_getter.get_urls(repos_to_deploy)
+repo_urls = url_getter.get_urls(args.repositories)
 
 excluded_filenames = json.loads(settings['ExcludedFilenames'])
 downloader = RepoDownloader(settings['TmpDir'], excluded_filenames)
 downloaded = downloader.download(repo_urls)
+
+if args.download_only:
+    print('Success')
+    exit()
 
 deployer = PluginDeployer(remote_connect_details)
 deployer.deploy(downloaded)
