@@ -21,11 +21,11 @@ print()
 print('Repositories:\n\t' + '\n\t'.join(args.repositories))
 print()
 
-url_getter = RepoUrlGetter(settings['GithubToken'])
+url_getter = RepoUrlGetter(settings['github_token'])
 repo_urls = url_getter.get_urls(args.repositories)
 
-excluded_filenames = json.loads(settings['ExcludedFilenames'])
-downloader = RepoDownloader(settings['TmpDir'], excluded_filenames)
+excluded_filenames = json.loads(settings['excluded_filenames'])
+downloader = RepoDownloader(settings['tmp_dir'], excluded_filenames)
 downloaded = downloader.download(repo_urls)
 
 if not args.download_only:
