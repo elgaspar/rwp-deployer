@@ -1,4 +1,4 @@
-# rwp-deployer
+# RWP Deployer
 
 A tool that downloads latest code of some wordpress plugins from a GitHub repository and uploads them to a WordPress server.
 
@@ -67,6 +67,6 @@ Also, WP-CLI has to be installed in the remote server.
 Author: Gasparis Elias (GitHub account [elgaspar](https://github.com/elgaspar))
 
 ## License
-**rwp-deployer** is licensed under the terms of the MIT License (See *LICENSE* file).
+**RWP Deployer** is licensed under the terms of the MIT License (See *LICENSE* file).
 
 

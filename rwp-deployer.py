@@ -6,7 +6,7 @@ import utilities
 import json
 
 
-VERSION = "0.0.0"  # FIXME
+VERSION = "1.0.0"
 
 args = utilities.read_args()
 
