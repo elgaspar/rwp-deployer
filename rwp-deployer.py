@@ -28,9 +28,12 @@ excluded_filenames = json.loads(settings['ExcludedFilenames'])
 downloader = RepoDownloader(settings['TmpDir'], excluded_filenames)
 downloaded = downloader.download(repo_urls)
 
-if args.download_only:
-    print('Success')
-    exit()
+if not args.download_only:
+    deployer = PluginDeployer(remote_connect_details)
+    deployer.deploy(downloaded)
 
-deployer = PluginDeployer(remote_connect_details)
-deployer.deploy(downloaded)
+    if not args.keep_files:
+        print('Cleaning temporary files...')
+        utilities.remove_files(downloaded.values())
+
+print('Success')
