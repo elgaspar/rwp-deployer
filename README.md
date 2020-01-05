@@ -10,7 +10,7 @@ A tool that downloads latest code of some wordpress plugins from a GitHub reposi
 
 ## How it works
 1. Connects to your GitHub account using a personal access token.
-2. Downloads the latest code from master branch of the specified repositories as ZIP archives.
+2. After you specify some of your repositories, it downloads the latest code from master branch of them as ZIP archives.
 3. Converts each of the downloaded archives:
     * Removes the suffix *'-master'* from the repository name of the directory
     * Removes the excluded files specified in config file. (See next section [Config File](##Config-File))
