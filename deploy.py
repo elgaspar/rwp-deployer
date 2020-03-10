@@ -44,6 +44,8 @@ class SftpClient:
         try:
             self.connection = paramiko.SSHClient()
             self.connection.load_system_host_keys()
+            self.connection.set_missing_host_key_policy(
+                paramiko.AutoAddPolicy())
             self.connection.connect(
                 self.url,
                 username=self.username,
@@ -91,6 +93,8 @@ class SshClient:
         try:
             self.client = paramiko.SSHClient()
             self.client.load_system_host_keys()
+            self.client.set_missing_host_key_policy(
+                paramiko.AutoAddPolicy())
             self.client.connect(
                 self.url,
                 username=self.username,
