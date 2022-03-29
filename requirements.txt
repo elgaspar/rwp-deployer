@@ -6,7 +6,7 @@ configparser==4.0.2
 cryptography==2.8
 Deprecated==1.2.7
 idna==2.8
-paramiko==2.7.1
+paramiko==2.10.1
 pycparser==2.19
 PyGithub==1.44.1
 PyJWT==1.7.1
